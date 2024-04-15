@@ -65,7 +65,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
               height: 8.0,
             ),
             TextField(
-              obscureText: true,
+              obscureText: showPassword,
               onChanged: (value) {
                 password = value;
               },
@@ -79,6 +79,7 @@ class RegistrationScreenState extends State<RegistrationScreen> {
                     color: Colors.grey,
                   ),
                   onPressed: () {
+                    print(showPassword);
                     showPassword = !showPassword;
                     setState(() {});
                   },

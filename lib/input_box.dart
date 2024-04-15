@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'constants.dart';
 
-class InputMessage extends StatefulWidget {
+class InputMessage extends StatelessWidget {
   const InputMessage(
-      {Key? key, this.controller, required this.onPressed, this.onChanged})
+      {Key? key,
+      this.controller,
+      required this.onPressed,
+      this.onChanged,
+      this.onImageSelect})
       : super(key: key);
 
   final TextEditingController? controller;
   final VoidCallback onPressed;
   final Function(String)? onChanged;
+  final VoidCallback? onImageSelect;
 
-  @override
-  State<InputMessage> createState() => _InputMessageState();
-}
-
-class _InputMessageState extends State<InputMessage> {
   @override
   Widget build(BuildContext context) {
     const baseWidth = 360;
@@ -30,41 +30,37 @@ class _InputMessageState extends State<InputMessage> {
         children: <Widget>[
           Container(
             width: w - (fem * (sendButtonWidth + 10)),
-            height: 50 * fem,
+            constraints: BoxConstraints(
+              maxHeight: 100 * fem,
+              minHeight: 40 * fem,
+            ),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(fem * 30),
                 color: Colors.white,
                 boxShadow: kElevationToShadow[1]),
             child: Row(
               children: [
-                InkWell(
-                  customBorder: const CircleBorder(),
-                  onTap: () {},
-                  child: SizedBox(
-                    width: fem * 40,
-                    height: fem * 40,
-                    child: const Icon(
-                      Icons.emoji_emotions_outlined,
-                    ),
-                  ),
-                ),
+                SizedBox(width: fem * 15),
                 Expanded(
                   child: TextField(
-                    controller: widget.controller,
-                    style: TextStyle(fontSize: fFem * 18),
-                    onChanged: widget.onChanged,
+                    controller: controller,
+                    style: TextStyle(fontSize: fFem * 15),
+                    onChanged: onChanged,
                     maxLines: null,
                     decoration: kMessageTextFieldDecoration,
                   ),
                 ),
                 InkWell(
                   customBorder: const CircleBorder(),
-                  onTap: () {},
-                  child: SizedBox(
-                    width: fem * 40,
-                    height: fem * 40,
-                    child: const Icon(
-                      Icons.attach_file_sharp,
+                  onTap: onImageSelect,
+                  child: Transform.rotate(
+                    angle: 0.3,
+                    child: SizedBox(
+                      width: fem * 40,
+                      height: fem * 40,
+                      child: const Icon(
+                        Icons.attach_file_sharp,
+                      ),
                     ),
                   ),
                 ),
@@ -99,17 +95,16 @@ class _InputMessageState extends State<InputMessage> {
             height: fem * 50,
             child: InkWell(
               customBorder: const CircleBorder(),
-              onTap: widget.onPressed,
+              onTap: onPressed,
               child: const Material(
                 color: kPrimaryColor,
                 elevation: 1,
                 shape: CircleBorder(),
                 child: Padding(
-                  padding: EdgeInsets.only(left: 3),
+                  padding: EdgeInsets.only(left: 4),
                   child: Icon(
-                    Icons.send,
+                    Icons.send_rounded,
                     color: Colors.white,
-                    size: 25,
                   ),
                 ),
               ),

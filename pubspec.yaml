@@ -20,6 +20,7 @@ dependencies:
   flutter_chat_bubble: ^2.0.2
   provider: ^6.0.5
   google_fonts: ^5.1.0
+  image_picker: ^1.0.2
 
 
 dev_dependencies:

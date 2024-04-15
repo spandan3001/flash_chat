@@ -36,9 +36,8 @@ class MessageStream extends StatelessWidget {
                 msgModels.length,
                 (index) => MessageBubble(
                   msgModel: msgModels[index],
-                  isMe: userModel.email == msgModels[index].withUser
-                      ? false
-                      : true,
+                  isMe: msgModels[index].isMe,
+                  imageUrl: msgModels[index].imageUrl,
                 ),
               );
               return ListView.builder(

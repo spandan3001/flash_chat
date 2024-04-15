@@ -3,7 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class MessageModel {
   final String id;
   final String withUser;
-  final String text;
+  final String? text;
+  final bool isMe;
   final String withUserDocId;
   final Timestamp timeStamp;
   final String? imageUrl;
@@ -11,6 +12,7 @@ class MessageModel {
   const MessageModel({
     this.imageUrl,
     required this.withUser,
+    required this.isMe,
     required this.withUserDocId,
     required this.text,
     required this.id,
@@ -27,6 +29,7 @@ class MessageModel {
       imageUrl: data['imageUrl'],
       text: data['text'],
       withUserDocId: data['withUserDocId'],
+      isMe: data['isMe'],
     );
   }
 }

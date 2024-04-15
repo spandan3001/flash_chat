@@ -20,7 +20,7 @@ class ChatCard extends StatelessWidget {
     // Color cardColor = Colors.transparent;
     //
     // Color splashColor = Colors.grey.shade400;
-    String lastMsg = lastChat.text;
+    String? lastMsg = lastChat.text;
     return InkWell(
       // onTap: () {
       //   onTapCardSelection();
@@ -75,7 +75,7 @@ class ChatCard extends StatelessWidget {
                           color: Colors.lightBlueAccent,
                         ),
                         const SizedBox(width: 5),
-                        Text(lastMsg),
+                        Text(lastMsg ?? ""),
                       ],
                     ),
                   ],

@@ -1,12 +1,15 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flash_chat/firebase_services/firestore_services.dart';
 import 'package:flash_chat/model/chat_model.dart';
 import 'package:flash_chat/model/user_model.dart';
+import 'package:flash_chat/screens/Image_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flash_chat/input_box.dart';
 import 'package:flash_chat/message_stream.dart';
-import '../model/message_model.dart';
 
 class ChatScreen extends StatefulWidget {
   static const id = 'chat_screen';
@@ -32,6 +35,17 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  File? selectedImage;
+
+  Future<void> pickImage() async {
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      setState(() {
+        selectedImage = File(image.path);
+      });
+    }
   }
 
   @override
@@ -72,6 +86,20 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             InputMessage(
               controller: messageController,
+              onImageSelect: () async {
+                await pickImage();
+                if (context.mounted) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ImageScreen(
+                                userModel: widget.userModel,
+                                withUser: widget.withUser,
+                                withUserDocId: widget.withUserDocId,
+                                selectedImage: selectedImage,
+                              )));
+                }
+              },
               onPressed: () {
                 if (messageController.text.trim().isNotEmpty) {
                   FieldValue fieldValue = FieldValue.serverTimestamp();
@@ -84,6 +112,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       'withUser': widget.withUser,
                       'timeStamp': fieldValue,
                       'withUserDocId': widget.withUserDocId,
+                      'isMe': true,
                     },
                   );
                   CloudService.userCollection
@@ -95,6 +124,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       'withUser': widget.userModel.email,
                       'timeStamp': fieldValue,
                       'withUserDocId': widget.userModel.id,
+                      'isMe': false,
                     },
                   );
                 }
